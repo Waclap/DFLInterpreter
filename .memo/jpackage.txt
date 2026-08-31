@@ -1,0 +1,10 @@
+./gradlew shadowJar
+
+
+jpackage `
+>>   --type app-image `
+>>   --name dfl `
+>>   --input build\libs `
+>>   --main-jar DatapackFilerLanguage-1.0-SNAPSHOT-all.jar `
+>>   --main-class MainKt `
+>>   --dest build\package
