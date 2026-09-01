@@ -1,17 +1,21 @@
-# Datapack Filer Language Compiler
+# Datapack Filer Language Interpreter
 
 ## 概要
-データパック(特にfunction)のファイル構成をわかりやすく書くことができる**Datapack Filer Language**のコンパイラです.  
-Datapack Filer Languageの解説は[DFL言語解説](docs/dfl_desc/DFL言語解説.md)に記載されています
-
-## 導入方法
-### Windowsの場合
-
-### その他の環境
-
+データパック(特にfunction)のファイル構成をわかりやすく書くことができる**Datapack Filer Language**のインタプリタです.  
+Datapack Filer Languageの解説は[DFL言語解説](docs/dfl_desc/DFL言語解説.md)に記載されています.
 
 ## 使用方法
-あああああああああ
+[GitHub](https://github.com/Waclap/DFLInterpreter)から最新版のバイナリ\(zipファイル)をダウンロードして展開し, その中のdfl.exeを実行して使用します.  
+`.\dfl.exe [ソースファイル] [生成先フォルダ]` のようにして実行します.  
+複数のソースファイルを使う場合は以下のようなPowerShellを使うと便利です.
+
+```powershell
+Get-ChildItem "src/" -Filter "*.dfl" -File -Recurse | ForEach-Object {
+    .\dfl.exe $_.FullName .\gen\
+}
+```
+
+PATHを設定すれば `dfl src.dfl .\gen\` のようにして実行できます.
 
 ## ライセンス
 このプロジェクトは **MIT ライセンス** のもとで公開されています.
