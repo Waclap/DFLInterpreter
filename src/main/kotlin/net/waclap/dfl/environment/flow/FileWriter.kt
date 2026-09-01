@@ -11,6 +11,7 @@ import java.nio.file.Paths
 internal class FileWriter(val rootPath: Path) {
     var isStopped = false
         private set
+    private var hasWritePackMcmeta = false
     private val fileStack = ArrayList<FileData>()
     private val idStack = ArrayList<ResourceId>()
 
@@ -44,6 +45,14 @@ internal class FileWriter(val rootPath: Path) {
     }
 
     fun write(content: String) {
+        if (idStack.isEmpty() && !hasWritePackMcmeta) {
+            hasWritePackMcmeta = true
+            val mcmeta = child("pack.mcmeta")
+            if (Files.exists(mcmeta)) {
+                Files.delete(mcmeta)
+            }
+            Files.createFile(mcmeta)
+        }
         val data = fileStack.last()
         if (!data.write(content)) {
             stop()
@@ -60,7 +69,7 @@ internal class FileWriter(val rootPath: Path) {
         }
     }
 
-    private fun stop() {
+    fun stop() {
         isStopped = true
     }
 

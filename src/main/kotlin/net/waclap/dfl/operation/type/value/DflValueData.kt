@@ -1,6 +1,7 @@
 package net.waclap.dfl.operation.type.value
 
 import net.waclap.dfl.environment.CompileEnvironment
+import org.apache.commons.jexl3.JexlException
 
 internal sealed class DflValue {
     class Literal(val value: Any) : DflValue() {
@@ -20,6 +21,7 @@ internal sealed class DflValue {
 
         override fun asValue(): Any {
             if (!CompileEnvironment.writeTimeValues.exist(name)) {
+                CompileEnvironment.fileWriter?.stop()
                 return "???"
             }
             return CompileEnvironment.writeTimeValues.get(name)
@@ -33,9 +35,16 @@ internal sealed class DflValue {
 
         override fun asValue(): Any {
             if (!CompileEnvironment.macros.test(name, args)) {
+                CompileEnvironment.fileWriter?.stop()
                 return "???"
             }
-            return CompileEnvironment.macros.call(name, args.map { it.asValue() })
+            try {
+                return CompileEnvironment.macros.call(name, args.map { it.asValue() })
+            } catch (_: JexlException) {
+                CompileEnvironment.fileWriter?.stop()
+                CompileEnvironment.logger.addGenerationError("error.jexl.execution")
+                return "???"
+            }
         }
     }
 

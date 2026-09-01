@@ -34,6 +34,7 @@ fun main(args: Array<String>) {
 
     val errors = compiler.compile(generationPath, program)
     if (errors.isNotEmpty() && errors.isNotBlank()) {
+        println("\u001b[31mAt $programPath:\u001b[0m")
         print(errors)
     }
 }

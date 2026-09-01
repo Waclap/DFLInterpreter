@@ -34,6 +34,7 @@ class DflCompilerLanguage {
                 "error.jexl.macro_already_exist" to "Macro '%s' is already defined",
                 "error.jexl.invalid_value" to "Invalid value '%s'",
                 "error.jexl.expected_value_name" to "Requires value name",
+                "error.jexl.execution" to "Failed to execute macro",
 
                 "error.generation.file_writer_error" to "Failed to write to the file",
                 "error.generation.could_not_open" to "Could not open file '%s'",
@@ -68,6 +69,7 @@ class DflCompilerLanguage {
                 "error.jexl.macro_already_exist" to "マクロ'%s'は既に定義されています",
                 "error.jexl.invalid_value" to "無効な値'%s'",
                 "error.jexl.expected_value_name" to "変数名が必要です",
+                "error.jexl.execution" to "マクロの実行に失敗しました",
 
                 "error.generation.file_writer_error" to "ファイル書き込みに失敗しました",
                 "error.generation.could_not_open" to "ファイル'%s'を開けませんでした",

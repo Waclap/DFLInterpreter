@@ -2,7 +2,7 @@
 
 ## 概要
 データパック(特にfunction)のファイル構成をわかりやすく書くことができる**Datapack Filer Language**のコンパイラです.  
-Datapack Filer Languageの文法は[Dfl言語解説](docs/dfl_desc/Dfl言語解説.md)に記載されています
+Datapack Filer Languageの解説は[DFL言語解説](docs/dfl_desc/DFL言語解説.md)に記載されています
 
 ## 導入方法
 ### Windowsの場合

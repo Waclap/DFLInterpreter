@@ -36,18 +36,3 @@ open function/load
     ///
 close
 popType
-
-C:.
-└─data
-    └─waclap
-        ├─function
-        │  │    load.mcfunction
-        │  │
-        │  └─dfl
-        │       recurse.mcfunction
-        │       recurse_test.mcfunction
-        │
-        └─tags
-            └─function
-                load.json
-
