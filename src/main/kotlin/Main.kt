@@ -16,7 +16,18 @@ fun main(args: Array<String>) {
         return
     }
     val sourceFile = args[0]
-    val generationPath = args.getOrNull(1)?.let { Paths.get(it) } ?: Paths.get("")
+    val generationPathStr = args.getOrNull(1)
+    if (generationPathStr == null) {
+        val builder = StringBuilder("\u001b[31m")
+
+        builder.appendLine("Usage: ")
+        builder.appendLine("    [source file] [generation location]?")
+
+        builder.appendLine("\u001b[0m")
+        print(builder.toString())
+        return
+    }
+    val generationPath = Paths.get(generationPathStr)
 
     val programPath = Paths.get(sourceFile)
     if (!programPath.exists() || !Files.isRegularFile(programPath)) {
