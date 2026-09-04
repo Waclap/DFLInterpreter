@@ -78,7 +78,7 @@ internal class ValueParser(private val tokens: List<TokenData>) {
             val data = if (currentStr.length <= 2) {
                 ""
             } else {
-                currentStr.substring(1, currentStr.length - 1)
+                currentStr.substring(1, currentStr.length - 1).replace("\\\"", "\"")
             }
             return DflValue.Literal(data)
 
