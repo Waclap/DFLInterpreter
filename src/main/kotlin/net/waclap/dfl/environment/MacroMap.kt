@@ -34,4 +34,8 @@ internal class MacroMap {
     fun reset() {
         map.clear()
     }
+
+    fun copy(): MacroMap {
+        return MacroMap().also { it.map.putAll(this.map) }
+    }
 }

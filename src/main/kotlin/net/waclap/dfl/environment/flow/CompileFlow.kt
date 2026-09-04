@@ -2,15 +2,13 @@ package net.waclap.dfl.environment.flow
 
 import net.waclap.dfl.ResourceId
 import net.waclap.dfl.environment.CompileEnvironment
+import net.waclap.dfl.operation.registry.OperationData
 import net.waclap.dfl.operation.registry.OperationRegistries
 import net.waclap.dfl.operation.type.CommentOperation
-import net.waclap.dfl.operation.type.fs.PopTypeOperation
-import net.waclap.dfl.operation.type.fs.PushTypeOperation
 import net.waclap.dfl.operation.type.std.CloseOperation
 import net.waclap.dfl.operation.type.std.OpenOperation
 import net.waclap.dfl.operation.type.std.StringParser
 import net.waclap.dfl.operation.type.std.WriteModeOperation
-import net.waclap.dfl.operation.registry.OperationData
 import net.waclap.dfl.unit.UnitOperation
 import net.waclap.dfl.unit.type.WriteUnitOperation
 import java.util.*
@@ -22,8 +20,6 @@ internal class CompileFlow {
     var commentMode = false
         private set
     var fileDepth = 0
-        private set
-    var typeSettingDepth = 0
         private set
     private var idStack = ArrayList<ResourceId>()
 
@@ -37,7 +33,6 @@ internal class CompileFlow {
         writingMode = WriteModeData()
         commentMode = false
         fileDepth = 0
-        typeSettingDepth = 0
         idStack.clear()
 
         while (lineIndex < lines.size) {
@@ -62,21 +57,6 @@ internal class CompileFlow {
                 is CloseOperation -> {
                     fileDepth--
                 }
-                is PushTypeOperation -> {
-                    typeSettingDepth++
-                }
-                is PopTypeOperation -> {
-                    if (typeSettingDepth <= 0) {
-                        CompileEnvironment.logger.addError("error.type_setting_underflow")
-                    }
-                    typeSettingDepth--
-                }
-            }
-        }
-
-        if (typeSettingDepth > 0) {
-            repeat(typeSettingDepth) {
-                CompileEnvironment.logger.addError("error.type_need_pop")
             }
         }
 

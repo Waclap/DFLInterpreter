@@ -2,8 +2,7 @@ package net.waclap.dfl.operation.registry
 
 import net.waclap.dfl.operation.type.DummyOperation
 import net.waclap.dfl.operation.type.CommentOperation
-import net.waclap.dfl.operation.type.fs.PopTypeOperation
-import net.waclap.dfl.operation.type.fs.PushTypeOperation
+import net.waclap.dfl.operation.type.fs.SetTypeOperation
 import net.waclap.dfl.operation.type.function.CallOperation
 import net.waclap.dfl.operation.type.function.RecurseOperation
 import net.waclap.dfl.operation.type.std.*
@@ -20,8 +19,7 @@ internal object OperationRegistries {
         register("open") { OpenOperation(it) }
         register("close") { CloseOperation }
 
-        register("pushType") { PushTypeOperation(it) }
-        register("popType") { PopTypeOperation }
+        register("setType") { SetTypeOperation(it) }
 
         register("recurse") { RecurseOperation(it) }
         register("call") { CallOperation(it) }
