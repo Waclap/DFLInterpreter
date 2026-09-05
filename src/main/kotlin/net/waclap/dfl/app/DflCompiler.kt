@@ -9,24 +9,17 @@ class DflCompiler(language: DflCompilerLanguage) {
         Messages.set(language.map)
     }
 
-    fun compile(rootDirectory: Path, program: String): String {
+    fun compile(rootDirectory: Path, sourcePath: Path): String {
         val errorBuilder = StringBuilder()
         var hasError = false
 
         CompileEnvironment.reset()
         CompileEnvironment.setRootDirectory(rootDirectory)
-        val result = CompileEnvironment.flow.start(program)
+        CompileEnvironment.read(sourcePath)
 
-        if (CompileEnvironment.logger.hasError) {
-            errorBuilder.appendLine(CompileEnvironment.logger.errors())
+        if (CompileEnvironment.resultLog.isNotEmpty()) {
+            errorBuilder.appendLine(CompileEnvironment.resultLog.toString())
             hasError = true
-        }
-
-        if (CompileEnvironment.flow.commentMode) {
-            hasError = true
-            errorBuilder.append("\u001b[31m")
-            errorBuilder.append(Messages.get("error.comment_unclosed"))
-            errorBuilder.appendLine("\u001b[0m")
         }
 
         val writer = CompileEnvironment.fileWriter
@@ -34,7 +27,6 @@ class DflCompiler(language: DflCompilerLanguage) {
             errorBuilder.append("\u001b[31m")
             errorBuilder.append(Messages.get("error.generation.file_writer_error"))
             errorBuilder.appendLine("\u001b[0m")
-
             return errorBuilder.toString()
         }
 
@@ -42,15 +34,16 @@ class DflCompiler(language: DflCompilerLanguage) {
             return errorBuilder.toString()
         }
 
-        for (op in result) {
+        for (op in CompileEnvironment.resultList) {
             if (writer.isStopped) {
                 break
             }
             op.apply()
         }
 
-        if (CompileEnvironment.logger.hasError) {
-            errorBuilder.appendLine(CompileEnvironment.logger.generationErrors())
+        if (CompileEnvironment.generationErrors.isNotEmpty()) {
+            errorBuilder.appendLine("Generation errors: ")
+            CompileEnvironment.generationErrors.forEach { errorBuilder.appendLine(it) }
         }
 
         return errorBuilder.toString()

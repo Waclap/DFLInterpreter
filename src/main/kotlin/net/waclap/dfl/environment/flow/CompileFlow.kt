@@ -1,5 +1,6 @@
 package net.waclap.dfl.environment.flow
 
+import net.waclap.dfl.Messages
 import net.waclap.dfl.ResourceId
 import net.waclap.dfl.environment.CompileEnvironment
 import net.waclap.dfl.operation.registry.OperationData
@@ -11,7 +12,10 @@ import net.waclap.dfl.operation.type.std.StringParser
 import net.waclap.dfl.operation.type.std.WriteModeOperation
 import net.waclap.dfl.unit.UnitOperation
 import net.waclap.dfl.unit.type.WriteUnitOperation
+import java.nio.file.Files
+import java.nio.file.Path
 import java.util.*
+import kotlin.io.path.exists
 
 internal class CompileFlow {
     private var lineIndex = 0
@@ -26,8 +30,15 @@ internal class CompileFlow {
     val line: Int
         get() = lineIndex
 
-    fun start(input: String): List<UnitOperation> {
+    fun start(sourceFile: Path) {
         val result = ArrayList<UnitOperation>()
+
+        if (!sourceFile.exists() || !Files.isRegularFile(sourceFile)) {
+            CompileEnvironment.logger.addError("File '$sourceFile' does not exist")
+            return
+        }
+        val input = Files.readString(sourceFile)
+
         lineIndex = 0
         lines.addAll(input.lines())
         writingMode = WriteModeData()
@@ -60,7 +71,7 @@ internal class CompileFlow {
             }
         }
 
-        return result
+        CompileEnvironment.resultList.addAll(result)
     }
 
     private fun handleWriteMode(result: ArrayList<UnitOperation>, op: String, operation: OperationData?, indent: Int, trimmed: String): Boolean {

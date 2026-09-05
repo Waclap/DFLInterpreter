@@ -5,6 +5,8 @@ import java.nio.file.Paths
 import kotlin.io.path.exists
 
 fun main(args: Array<String>) {
+    val args = arrayOf("./.test/src.dfl", "./.test/gen")
+
     if (args.isEmpty()) {
         val builder = StringBuilder("\u001b[31m")
 
@@ -39,13 +41,11 @@ fun main(args: Array<String>) {
         print(builder.toString())
         return
     }
-    val program = Files.readString(programPath)
 
     val compiler = DflCompiler(DflCompilerLanguage.EN_US)
 
-    val errors = compiler.compile(generationPath, program)
+    val errors = compiler.compile(generationPath, programPath)
     if (errors.isNotEmpty() && errors.isNotBlank()) {
-        println("\u001b[31mAt $programPath:\u001b[0m")
         print(errors)
     }
 }
