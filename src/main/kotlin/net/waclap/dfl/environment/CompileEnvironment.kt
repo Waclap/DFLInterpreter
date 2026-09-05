@@ -37,6 +37,10 @@ internal object CompileEnvironment {
     }
 
     fun read(path: Path) {
+        if (!path.exists() || !Files.isRegularFile(path)) {
+            logger.addError("error.file_unfound", path.toString())
+            return
+        }
         if (successfullyLoadedFiles.contains(FileData(path))) {
             return
         }
