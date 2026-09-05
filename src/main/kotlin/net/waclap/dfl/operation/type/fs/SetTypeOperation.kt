@@ -7,11 +7,11 @@ import net.waclap.dfl.environment.CompileEnvironment
 import net.waclap.dfl.environment.TypeSetting
 import net.waclap.dfl.operation.registry.OperationData
 import net.waclap.dfl.unit.UnitOperation
-import net.waclap.dfl.unit.type.PushTypeUnitOperation
+import net.waclap.dfl.unit.type.SetTypeUnitOperation
 
 internal class SetTypeOperation(operand: String) : OperationData(operand.trim()) {
     override fun read(): List<UnitOperation> {
-        return listOf(PushTypeUnitOperation(Parser(operand).parse()))
+        return listOf(SetTypeUnitOperation(Parser(operand).parse()))
     }
 
     private class Parser(val input: String) {

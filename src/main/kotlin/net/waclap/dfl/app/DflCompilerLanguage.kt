@@ -25,6 +25,7 @@ class DflCompilerLanguage {
                 "error.type_need_pop" to "Required to pop type",
                 "error.unable_to_recurse" to "Unable to recurse here",
                 "error.comment_unclosed" to "The comment block is not closed correctly",
+                "error.file_unfound" to "File '%s' does not exist",
 
                 "error.jexl.expected_macro" to "Expected macro definition",
                 "error.jexl.need_macro_name" to "Requires macro name",
@@ -59,6 +60,7 @@ class DflCompilerLanguage {
                 "error.type_need_pop" to "タイプ設定をポップする必要があります",
                 "error.unable_to_recurse" to "ここでは再帰は使えません",
                 "error.comment_unclosed" to "コメントブロックが閉じていません",
+                "error.file_unfound" to "ファイル'%s'は存在しません",
 
                 "error.jexl.expected_macro" to "マクロ定義がありません",
                 "error.jexl.need_macro_name" to "マクロ名が必要です",

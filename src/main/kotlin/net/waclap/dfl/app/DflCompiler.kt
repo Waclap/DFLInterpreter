@@ -11,7 +11,6 @@ class DflCompiler(language: DflCompilerLanguage) {
 
     fun compile(rootDirectory: Path, sourcePath: Path): String {
         val errorBuilder = StringBuilder()
-        var hasError = false
 
         CompileEnvironment.reset()
         CompileEnvironment.setRootDirectory(rootDirectory)
@@ -19,7 +18,7 @@ class DflCompiler(language: DflCompilerLanguage) {
 
         if (CompileEnvironment.resultLog.isNotEmpty()) {
             errorBuilder.appendLine(CompileEnvironment.resultLog.toString())
-            hasError = true
+            return errorBuilder.toString()
         }
 
         val writer = CompileEnvironment.fileWriter
@@ -27,10 +26,6 @@ class DflCompiler(language: DflCompilerLanguage) {
             errorBuilder.append("\u001b[31m")
             errorBuilder.append(Messages.get("error.generation.file_writer_error"))
             errorBuilder.appendLine("\u001b[0m")
-            return errorBuilder.toString()
-        }
-
-        if (hasError) {
             return errorBuilder.toString()
         }
 

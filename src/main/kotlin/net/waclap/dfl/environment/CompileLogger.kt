@@ -25,8 +25,8 @@ internal class CompileLogger {
 
         for (line in errorLines) {
             val entry = errors[line] ?: arrayListOf()
-            builder.appendLine("- L$line:")
-            entry.forEach { builder.appendLine("    $it") }
+            builder.appendLine("L$line:")
+            entry.forEach { builder.appendLine("- $it") }
         }
 
         builder.append("\u001b[0m")

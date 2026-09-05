@@ -2,6 +2,7 @@ package net.waclap.dfl.operation.registry
 
 import net.waclap.dfl.operation.type.DummyOperation
 import net.waclap.dfl.operation.type.CommentOperation
+import net.waclap.dfl.operation.type.fs.IncludeOperation
 import net.waclap.dfl.operation.type.fs.SetTypeOperation
 import net.waclap.dfl.operation.type.function.CallOperation
 import net.waclap.dfl.operation.type.function.RecurseOperation
@@ -29,6 +30,7 @@ internal object OperationRegistries {
 
         register("set") { SetOperation(it) }
         register("def") { DefOperation(it) }
+        register("include") { IncludeOperation(it) }
     }
 
     private fun register(op: String, factory: (String) -> OperationData) {

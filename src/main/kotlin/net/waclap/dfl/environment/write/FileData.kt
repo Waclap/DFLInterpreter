@@ -5,6 +5,7 @@ import java.io.IOException
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.StandardOpenOption
+import kotlin.io.path.absolute
 
 internal class FileData(val file: Path) {
     fun write(content: String): Boolean {
@@ -23,10 +24,10 @@ internal class FileData(val file: Path) {
     }
 
     override fun equals(other: Any?): Boolean {
-        return other is FileData && other.file == file
+        return other is FileData && other.file.absolute() == file.absolute()
     }
 
     override fun hashCode(): Int {
-        return file.hashCode()
+        return file.absolute().hashCode()
     }
 }

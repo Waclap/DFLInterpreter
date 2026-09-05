@@ -1,6 +1,5 @@
 package net.waclap.dfl.environment.flow
 
-import net.waclap.dfl.Messages
 import net.waclap.dfl.ResourceId
 import net.waclap.dfl.environment.CompileEnvironment
 import net.waclap.dfl.operation.registry.OperationData
@@ -19,7 +18,7 @@ import kotlin.io.path.exists
 
 internal class CompileFlow {
     private var lineIndex = 0
-    private val lines = LinkedList<String>()
+    private val lines = arrayListOf<String>()
     var writingMode = WriteModeData()
     var commentMode = false
         private set
@@ -34,7 +33,7 @@ internal class CompileFlow {
         val result = ArrayList<UnitOperation>()
 
         if (!sourceFile.exists() || !Files.isRegularFile(sourceFile)) {
-            CompileEnvironment.logger.addError("File '$sourceFile' does not exist")
+            CompileEnvironment.logger.addError("error.file_unfound", sourceFile.toString())
             return
         }
         val input = Files.readString(sourceFile)
@@ -89,13 +88,14 @@ internal class CompileFlow {
 
         if (writingMode.isInMode) {
             writingMode.add(trimmed, indent)
-        } else {
-            if (operation == null) {
-                CompileEnvironment.logger.addError("error.reader.unknown_operation", op)
-                return true
-            }
-            operation.read()?.let { result.addAll(it) }
+            return false
         }
+
+        if (operation == null) {
+            CompileEnvironment.logger.addError("error.reader.unknown_operation", op)
+            return true
+        }
+        operation.read()?.let { result.addAll(it) }
         return false
     }
 
