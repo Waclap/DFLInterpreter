@@ -19,7 +19,7 @@ Get-ChildItem "src/" -Filter "*.dfl" -File -Recurse | ForEach-Object {
 
 ```
 * function example
-pushType waclap function mcfunction
+setType waclap function mcfunction
 open load
     / scoreboard objectives add dfl_example dummy
     > execute as @a at @s run |
@@ -39,13 +39,11 @@ open dfl/recurse_test
     call otherlib:hello
 close
 
-popType
-
 ***
  tags from here
 ***
 
-pushType waclap tags json
+setType waclap tags json
 open function/load
     ///
     {
@@ -55,7 +53,6 @@ open function/load
     }
     ///
 close
-popType
 ```
 </details>
 
@@ -126,7 +123,7 @@ function otherlib:hello
 タイプ設定は'デフォルト名前空間', 'データタイプ', 'ファイル拡張子'の3つで構成される.  
 デフォルト名前空間=waclap, データタイプ=function, ファイル拡張子=mcfunction の場合, 'math/add' のリソースロケーションにあたるファイルは 'data/waclap/function/math/add.mcfunction' となる.  
 デフォルト名前空間とデータタイプには半角小文字英数字とアンダーバー'\_'を使用でき, ファイル拡張子には半角小文字英数字とアンダーバー'_', ピリオド'.'を使うことができる.  
-デフォルトのタイプ設定は 'minecraft', 'function', 'mcfunction' となっている. タイプ設定の変更にはpushType命令とpopType命令を使用する.
+デフォルトのタイプ設定は 'minecraft', 'function', 'mcfunction' となっている. タイプ設定の変更にはsetType命令を使用する.
 
 ## 命令一覧
 <details>
@@ -141,11 +138,11 @@ function otherlib:hello
 - ファイル系命令  
 [open 命令](#open_op)  
 [close 命令](#close_op)  
-[pushType 命令](#push_type_op)  
-[popType 命令](#pop_type_op)
+[setType 命令](#set_type_op)  
 - 変数系命令  
 [set 命令](#set_op)  
 [def 命令](#def_op)  
+[include 命令](#include_op)  
 - コメント系命令  
 [* 命令](#comment_op)  
 [*** 命令](#comment_mode_op)
@@ -255,14 +252,13 @@ waclap:particles/flameには
 `particle flame ~ ~ ~ 0 0 0 0.1 10`
 が書き込まれる.
 
-<a id="push_type_op"></a>
-### pushType 命令
+<a id="set_type_op"></a>
+### setType 命令
 - 機能  
-  タイプ設定を更新する. オペランドは 'デフォルト名前空間', 'データタイプ', 'ファイル拡張子' の順でスペース区切りで記載する.
-  必ず[popType命令](#pop_type_op)によって閉じられている必要がある.  
+  タイプ設定を更新する. オペランドは 'デフォルト名前空間', 'データタイプ', 'ファイル拡張子' の順でスペース区切りで記載する.  
 - 使用例
 ```
-pushType minecraft tags json
+setType minecraft tags json
 open function/load
     ///
     {
@@ -272,7 +268,6 @@ open function/load
     }
     ///
 close
-popType
 ```
 ⇒
 'data/minecraft/tags/function/load.json' に
@@ -284,26 +279,6 @@ popType
 }
 ```
 と書き込まれる.
-
-<a id="pop_type_op"></a>
-### popType 命令
-- 機能  
-  pushType命令によって変更されたタイプ設定を変更前の状態に戻す.  
-  デフォルト状態のタイプ設定はそれ以上popTypeできない.
-- 使用例
-```
-pushType waclap memo txt
-open foo
-    / memo test
-close
-popType
-pushType waclap function mcfunction
-open hello
-    summon tnt
-close
-popType
-```
-⇒'data/waclap/memo/foo.json' に`memo test`と書き込まれ, 'data/waclap/function/hello.mcfunction' に`summon tnt`と書き込まれる.
 
 <a id="set_op"></a>
 ### set 命令
@@ -331,6 +306,35 @@ set name = add("player", 2)
 / kill @a[name="%{name}"]
 ```
 ⇒ `kill @a[name="player2"]`と書き込まれる.
+
+<a id="include_op"></a>
+### include 命令
+- 機能  
+`include [ファイルパス]` 指定されたファイルを実行し, その際のマクロ定義や変数の状態, タイプ設定を引き継いでもとの行に戻る.  
+書き込みやファイル作成の命令を書くのはおすすめしない.  
+- 使用例  
+
+config.dfl: 
+```
+def add(a, b) = a + b
+set author = "Waclap"
+```
+src.dfl: 
+```
+include config.dfl
+
+open a
+    set sum = add(2, 3)
+    / sum: %{sum}
+    / %{author}
+close
+```
+⇒ 'a' にあたるファイルに
+```
+5
+Waclap
+```
+と書き込まれる.
 
 <a id="comment_op"></a>
 ### \* 命令
