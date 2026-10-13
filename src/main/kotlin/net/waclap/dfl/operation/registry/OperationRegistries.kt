@@ -1,12 +1,13 @@
 package net.waclap.dfl.operation.registry
 
-import net.waclap.dfl.operation.type.DummyOperation
 import net.waclap.dfl.operation.type.CommentOperation
+import net.waclap.dfl.operation.type.DummyOperation
 import net.waclap.dfl.operation.type.fs.IncludeOperation
 import net.waclap.dfl.operation.type.fs.SetTypeOperation
 import net.waclap.dfl.operation.type.function.CallOperation
 import net.waclap.dfl.operation.type.function.RecurseOperation
 import net.waclap.dfl.operation.type.std.*
+import net.waclap.dfl.operation.type.value.ApplyOperation
 import net.waclap.dfl.operation.type.value.SetOperation
 import net.waclap.dfl.operation.type.value.def.DefOperation
 
@@ -29,6 +30,7 @@ internal object OperationRegistries {
         register("***") { CommentOperation }
 
         register("set") { SetOperation(it) }
+        register("apply") { ApplyOperation(it) }
         register("def") { DefOperation(it) }
         register("include") { IncludeOperation(it) }
     }

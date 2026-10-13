@@ -141,6 +141,7 @@ function otherlib:hello
 [setType 命令](#set_type_op)  
 - 変数系命令  
 [set 命令](#set_op)  
+[apply 命令](#apply_op)  
 [def 命令](#def_op)  
 [include 命令](#include_op)  
 - コメント系命令  
@@ -292,6 +293,19 @@ set tag = "participants"
 / kill @a[tag=%{tag}]
 ```
 ⇒ `kill @a[tag=participants]`と書き込まれる.
+
+<a id="apply_op"></a>
+### apply 命令
+- 機能  
+  変数に値を一括代入する.  
+  `apply [変数名1]: [値1], [変数名2]: [値2]` とすることで\[変数名1]の変数に\[値1]を, \[変数名2]の変数に\[値2]を代入できる.  
+  値の解説は[値](#値)に記載されています.
+- 使用例
+```
+set x: -sin(0), y: 5, z: cos(0)
+/ tp @a %{x} %{y} %{z}
+```
+⇒ `tp @a 0 5 1`と書き込まれる.
 
 <a id="def_op"></a>
 ### def 命令

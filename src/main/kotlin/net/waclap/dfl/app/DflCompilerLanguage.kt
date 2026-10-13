@@ -33,7 +33,7 @@ class DflCompilerLanguage {
                 "error.jexl.macro_not_exist" to "Macro '%s' is undefined",
                 "error.jexl.macro_already_exist" to "Macro '%s' is already defined",
                 "error.jexl.invalid_value" to "Invalid value '%s'",
-                "error.jexl.expected_value_name" to "Requires value name",
+                "error.jexl.expected_value_name" to "Expected value name",
                 "error.jexl.execution" to "Failed to execute macro",
 
                 "error.generation.file_writer_error" to "Failed to write to the file",

@@ -20,7 +20,7 @@ internal class ValueParser(private val tokens: List<TokenData>) {
         return true
     }
 
-    private fun tryParseValue(): DflValue? {
+    fun tryParseValue(): DflValue? {
         tryParseMacroCall()?.also { return it }
         if (i < tokens.size) {
             tryParseLiteral()?.also { return it }
@@ -105,12 +105,16 @@ internal class ValueParser(private val tokens: List<TokenData>) {
 
     }
 
-    private fun consume(type: TokenType): Boolean {
+    fun consume(type: TokenType): Boolean {
         if (i < tokens.size && tokens[i].type == type) {
             i++
             return true
         }
         return false
+    }
+
+    fun previous(): TokenData {
+        return tokens[i - 1]
     }
 
     companion object {
